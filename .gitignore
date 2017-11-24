@@ -1,0 +1,4 @@
+node_modules
+selenium-server-standalone-3.7.0.jar
+chromedriver.exe
+mochawesome-report

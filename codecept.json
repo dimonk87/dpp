@@ -1,0 +1,34 @@
+{
+  "output": "./output",
+  "helpers": {
+    "Mochawesome": {
+     "uniqueScreenshotNames": "true"
+    },
+    "Protractor": {
+      "url": "http://localhost:8080",
+      "driver": "hosted",
+      "browser": "chrome",
+      "rootElement": "body",
+      "windowSize": "1920x1080",
+      "uniqueScreenshotNames": "true"
+    }
+  },
+  "include": {
+    "I": "./steps_file.js",
+    "loginPage": "./pages/loginPage.js",
+    "usersPage": "./pages/usersPage.js",
+    "partnersPage": "./pages/partnersPage.js",
+    "processPage": "./pages/processPage.js"
+  },
+  "mocha": {
+    "reporterOptions": {
+      "reportDir": "output"
+    }
+  },
+  "bootstrap": false,
+  "teardown": null,
+  "hooks": [],
+  "tests": "./*_test.js",
+  "timeout": 10000,
+  "name": "try2"
+}
