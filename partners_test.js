@@ -13,6 +13,7 @@ var editPartnerEmail;
 var editPartnerPhone;
 
 Before((I, loginPage) => {
+    I.resizeWindow('maximize');
     I.amOnPage('/');
     loginPage.sendForm('admin@admin.com', 'qweqwe');
     partnerName = "user" + Math.floor(Math.random()*100);

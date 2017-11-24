@@ -21,25 +21,26 @@ module.exports = {
     host: '[formcontrolname=host]',
     dir: '[formcontrolname=dir]',
     localDir: '[formcontrolname=local_dir]',
-    caseName: '[formcontrolname=local_dir]',
-    satisfyRegex: 'input.ng-touched',
-    followingActions: 'input.ng-untouched[placeholder=Value]'
+    caseName: '[formarrayname=rule_sets] [formcontrolname=name]',
+    satisfyRegex: '[formarrayname=validation_rules] [formcontrolname=value]',
+    followingActions: '[formarrayname=processing_rules] [formcontrolname=value]'
   },
 
   buttons: {
     createProcess: 'button[id=add-point-button]',
-    addPoint: '[aria-label="Add point"]'
+    addPoint: 'mat-card:last-of-type [aria-label="Add point"]'
   },
 
   selects: {
     partners: '[formcontrolname=partners]',
     protocol: '[formcontrolname=protocol]',
     direction: '[formcontrolname=direction]',
-    encryptionForFtp: '[formgroupname=connection]',
+    encryptionForFtp: '[formcontrolname=encryption]',
     executeTaskEvery: '[formcontrolname=interval]',
     conectionTypeForFtp: '[formcontrolname=connection_method]',
-    satisfy: '[formcontrolname=satisfy_type]',
-    executeFollowingActions: 'mat-select.mat-select-invalid'
+    satisfy: '[formcontrolname="satisfy_type"]',
+    satisfyRegexSelect: '[formarrayname=validation_rules] [formcontrolname=type_id]',
+    executeFollowingActions: '[formarrayname=processing_rules] [formcontrolname=type_id]'
   },
 
   options: {
@@ -70,20 +71,27 @@ module.exports = {
     I.fillField(this.fields.password, password);
     this.chooseDropDownOption(this.selects.executeTaskEvery, this.options.firstOption);
     I.fillField(this.fields.port, port);
-    I.fillField(this.fields.port, host);
+    I.fillField(this.fields.host, host);
     I.fillField(this.fields.dir, dir);
     I.fillField(this.fields.localDir, dir);
   },
 
   addRulesForProcess(caseName, satisfyRegex, followingActions) {
+    I.click('[name=form]');
     I.fillField(this.fields.caseName, caseName);
+    I.waitForClickable(this.selects.satisfy, 5);
     this.chooseDropDownOption(this.selects.satisfy, this.options.firstOption);
     I.fillField(this.fields.satisfyRegex, satisfyRegex);
-    this.chooseDropDownOption(this.selects.executeFollowingActions, this.options.lastOption);
+    this.chooseDropDownOption(this.selects.satisfyRegexSelect, this.options.firstOption);
+    I.waitForClickable(this.selects.executeFollowingActions, 5);
     I.fillField(this.fields.followingActions, followingActions);
+    this.chooseDropDownOption(this.selects.executeFollowingActions, this.options.lastOption);
+    I.click('[name=form]');
   },
 
   pushButtonAddPoint() {
+    I.pressKey('END');
+    I.waitForClickable(this.buttons.addPoint, 5);
     I.click(this.buttons.addPoint);
   }
 

@@ -5,6 +5,7 @@ var processName, tagsForProcess, ownerForProcess, descriptionForProcess, emailSu
 var caseName, satisfyRegex, followingActions;
 
 Before((I, loginPage) => {
+    I.resizeWindow('maximize');
     I.amOnPage('/');
     loginPage.sendForm('admin@admin.com', 'qweqwe');
     I.click('[href="/points"]');
@@ -19,12 +20,12 @@ Before((I, loginPage) => {
     dir = "localDir " + port;
     caseName = "Rule" + Math.floor(Math.random()*100);
     satisfyRegex = '/(.*)\.txt/';
-    followingActions = dir;
+    followingActions = "mail" + port + "@mail.com";
 });
 
 Scenario('As admin I should be able to create new process @process', (I, processPage) => {
     processPage.addProcessingPoint(processName, tagsForProcess, ownerForProcess, descriptionForProcess, user, password, port, host, dir);
     processPage.addRulesForProcess(caseName, satisfyRegex, followingActions);
     processPage.pushButtonAddPoint();
-    I.see(processName);
+    I.waitForText(processName, 5);
 });

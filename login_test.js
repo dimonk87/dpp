@@ -2,6 +2,7 @@
 Feature('Test login');
 
 Before((I) => {
+    I.resizeWindow('maximize');
     I.amOnPage('/');
 });
 

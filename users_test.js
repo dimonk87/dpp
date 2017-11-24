@@ -8,6 +8,7 @@ var userPhone;
 var editUserName;
 
 Before((I, loginPage) => {
+    I.resizeWindow('maximize');
     I.amOnPage('/');
     loginPage.sendForm('admin@admin.com', 'qweqwe');
     userName = "user" + Math.floor(Math.random()*100);

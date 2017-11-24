@@ -9,7 +9,6 @@
       "driver": "hosted",
       "browser": "chrome",
       "rootElement": "body",
-      "windowSize": "1920x1080",
       "uniqueScreenshotNames": "true"
     }
   },
