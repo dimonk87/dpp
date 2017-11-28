@@ -28,7 +28,13 @@ module.exports = {
 
   buttons: {
     createProcess: 'button[id=add-point-button]',
-    addPoint: 'mat-card:last-of-type [aria-label="Add point"]'
+    addPoint: 'mat-card:last-of-type [aria-label="Add point"]',
+    editProcess: 'mat-row:last-of-type button[tabindex]',
+    editPoint: 'mat-card:last-of-type [aria-label="Edit point"]',
+    copyProcess: 'mat-row:last-of-type button:first-of-type',
+    deleteProcess: 'mat-row:nth-last-of-type(2) button:last-of-type',
+    deletePartnerFirstConfirm: 'fuse-delete-dialog button:first-of-type',
+    deletePartnerSecondConfirm: 'fuse-delete-dialog-confirm .mat-button:first-of-type'
   },
 
   selects: {
@@ -87,12 +93,35 @@ module.exports = {
     I.fillField(this.fields.followingActions, followingActions);
     this.chooseDropDownOption(this.selects.executeFollowingActions, this.options.lastOption);
     I.click('[name=form]');
+    this.pushButtonAddPoint(this.buttons.addPoint);
   },
 
-  pushButtonAddPoint() {
+  pushButtonAddPoint(option) {
     I.pressKey('END');
-    I.waitForClickable(this.buttons.addPoint, 5);
-    I.click(this.buttons.addPoint);
+    I.waitForClickable(option, 5);
+    I.click(option);
+  },
+
+  editProcess(editProcessName, host) {
+    I.click(this.buttons.editProcess);
+    I.fillField(this.fields.processName, editProcessName);
+    this.chooseDropDownOption(this.selects.conectionTypeForFtp, this.options.firstOption);
+    I.fillField(this.fields.host, host);
+    I.click('[name=form]');
+    this.chooseDropDownOption(this.selects.satisfy, this.options.lastOption);
+    I.click('[name=form]');
+    this.pushButtonAddPoint(this.buttons.editPoint);
+  },
+
+  copyEditedProcess() {
+    I.click(this.buttons.copyProcess);
+  },
+
+  deleteEditProcess() {
+    I.click(this.buttons.deleteProcess);
+    I.click(this.buttons.deletePartnerFirstConfirm);
+    I.waitForElement(this.buttons.deletePartnerSecondConfirm, 5);
+    I.click(this.buttons.deletePartnerSecondConfirm);
   }
 
   // insert your locators and methods here
