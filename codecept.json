@@ -11,7 +11,9 @@
       "rootElement": "body",
       "uniqueScreenshotNames": "true"
     },
-    "REST": {}
+    "REST": {
+      "endpoint": "http://localhost:8080"
+    }
   },
   "include": {
     "I": "./steps_file.js",
