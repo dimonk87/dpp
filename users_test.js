@@ -6,11 +6,21 @@ var userEmail;
 var userPassword;
 var userPhone;
 var editUserName;
+var unirest = require('unirest');
+var token = '';
 
 Before((I, loginPage) => {
     I.resizeWindow('maximize');
     I.amOnPage('/');
-    loginPage.sendForm('admin@admin.com', 'qweqwe');
+    I.sendPostRequest('http://localhost:8080/api/auth/login',
+        {"email": "admin@admin.com", "password": "qweqwe"},
+        {headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}}).then(function(resp) {
+        token = resp.body.access_token;
+        I.executeScript(`localStorage.setItem('access_token', '${token}')`);
+        I.executeScript(`localStorage.setItem('user', '{"data":{"id":1,"name":"admin","email":"admin@admin.com","phone":null,"isBlocked":false,"role":{"data":{"id":1,"name":"admin"}}}}')`);
+        I.refresh();
+    });
+    //loginPage.sendForm('admin@admin.com', 'qweqwe');
     userName = "user" + Math.floor(Math.random()*100);
     userEmail = "mail" + Math.floor(Math.random()*100) + "@mail.com";
     userPassword = "password" + Math.floor(Math.random()*100);

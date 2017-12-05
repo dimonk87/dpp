@@ -10,7 +10,8 @@
       "browser": "chrome",
       "rootElement": "body",
       "uniqueScreenshotNames": "true"
-    }
+    },
+    "REST": {}
   },
   "include": {
     "I": "./steps_file.js",
