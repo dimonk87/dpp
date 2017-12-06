@@ -10,7 +10,7 @@ var userId;
 var unirest = require('unirest');
 var token = '';
 
-Before((I, loginPage) => {
+BeforeSuite((I) => {
     I.resizeWindow('maximize');
     I.amOnPage('/');
     I.sendPostRequest('/api/auth/login',
@@ -19,13 +19,17 @@ Before((I, loginPage) => {
         token = resp.body.access_token;
         I.executeScript(`localStorage.setItem('access_token', '${token}')`);
         I.executeScript(`localStorage.setItem('user', '{"data":{"id":1,"name":"admin","email":"admin@admin.com","phone":null,"isBlocked":false,"role":{"data":{"id":1,"name":"admin"}}}}')`);
-        //I.refresh();
         I.haveRequestHeaders({
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         });
     });
+});
+
+Before((I) => {
+    I.executeScript(`localStorage.setItem('access_token', '${token}')`);
+    I.executeScript(`localStorage.setItem('user', '{"data":{"id":1,"name":"admin","email":"admin@admin.com","phone":null,"isBlocked":false,"role":{"data":{"id":1,"name":"admin"}}}}')`);
     userName = "user" + Math.floor(Math.random()*1000);
     userEmail = "mail" + Math.floor(Math.random()*1000) + "@mail.com";
     userPassword = "password" + Math.floor(Math.random()*100);
@@ -41,7 +45,6 @@ Scenario('create user @users', (I, usersPage) => {
     I.sendGetRequest('/api/users').then(function(resp) {
         const usersList = resp.body.data;
         const lastUserId = usersList[usersList.length-1].id;
-        console.log(lastUserId);
         I.sendDeleteRequest('/api/users/' + lastUserId);
     });
 });
@@ -50,7 +53,6 @@ Scenario('edit created user @users', (I, usersPage) => {
     I.sendPostRequest('/api/users', JSON.stringify({'email': userEmail, "name": userName, "password": userPassword, "role": 2, "phone": userPhone, "isBlocked": false}))
         .then(function(resp) {
             userId = resp.body.data.id;
-            console.log(userId);
             I.refresh();
             I.waitForText(userName);
             usersPage.editCreatedUser(editUserName);
@@ -61,11 +63,10 @@ Scenario('edit created user @users', (I, usersPage) => {
 
 });
 
-Scenario('delete created user @usersdelete', (I, usersPage) => {
+Scenario('delete created user @users', (I, usersPage) => {
     I.sendPostRequest('/api/users', JSON.stringify({'email': userEmail, "name": userName, "password": userPassword, "role": 2, "phone": userPhone, "isBlocked": false}))
         .then(function(resp) {
             userId = resp.body.data.id;
-            console.log(userId);
             I.refresh();
             I.waitForText(userName);
             usersPage.deleteCreatedUser();
