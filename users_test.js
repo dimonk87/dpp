@@ -26,32 +26,50 @@ Before((I, loginPage) => {
             'Authorization': 'Bearer ' + token
         });
     });
-    userName = "user" + Math.floor(Math.random()*100);
-    userEmail = "mail" + Math.floor(Math.random()*100) + "@mail.com";
+    userName = "user" + Math.floor(Math.random()*1000);
+    userEmail = "mail" + Math.floor(Math.random()*1000) + "@mail.com";
     userPassword = "password" + Math.floor(Math.random()*100);
-    userPhone = Math.floor(Math.random()*100) + "-" + Math.floor(Math.random()*100);
+    userPhone = Math.floor(Math.random()*1000) + "-" + Math.floor(Math.random()*1000);
     editUserName = "Change " + userName;
 });
 
 Scenario('create user @users', (I, usersPage) => {
+    I.refresh();
     usersPage.createNewUser(userName, userEmail, userPassword, userPhone);
     I.waitForText(userName, 5);
     I.see(userName);
-});
-
-Scenario('edit created user @usersedit', (I, usersPage) => {
-    I.sendPostRequest('/api/users',
-        JSON.stringify({'email': userEmail, "name": userName, "password": userPassword, "role": 2, "phone": userPhone, "isBlocked": false})).then(function(resp) {
-        userId = resp.body.data.id;
-        console.log(userId);
+    I.sendGetRequest('/api/users').then(function(resp) {
+        const usersList = resp.body.data;
+        const lastUserId = usersList[usersList.length-1].id;
+        console.log(lastUserId);
+        I.sendDeleteRequest('/api/users/' + lastUserId);
     });
-    I.refresh();
-    usersPage.editCreatedUser(editUserName);
-    I.waitForText(editUserName, 5);
-    I.see(editUserName);
 });
 
-Scenario('delete created user @users', (I, usersPage) => {
-    usersPage.deleteCreatedUser();
-    I.dontSee(editUserName);
+Scenario('edit created user @users', (I, usersPage) => {
+    I.sendPostRequest('/api/users', JSON.stringify({'email': userEmail, "name": userName, "password": userPassword, "role": 2, "phone": userPhone, "isBlocked": false}))
+        .then(function(resp) {
+            userId = resp.body.data.id;
+            console.log(userId);
+            I.refresh();
+            I.waitForText(userName);
+            usersPage.editCreatedUser(editUserName);
+            I.waitForText(editUserName, 5);
+            I.see(editUserName);
+            I.sendDeleteRequest('/api/users/' + userId);
+        });
+
+});
+
+Scenario('delete created user @usersdelete', (I, usersPage) => {
+    I.sendPostRequest('/api/users', JSON.stringify({'email': userEmail, "name": userName, "password": userPassword, "role": 2, "phone": userPhone, "isBlocked": false}))
+        .then(function(resp) {
+            userId = resp.body.data.id;
+            console.log(userId);
+            I.refresh();
+            I.waitForText(userName);
+            usersPage.deleteCreatedUser();
+            I.wait(1);
+            I.dontSee(userName);
+        });
 });

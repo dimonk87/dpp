@@ -16,7 +16,7 @@ module.exports = {
     userPhone: 'input[formcontrolname=phone]',
   },
   createUserButton: 'button[id=add-user-button]',
-  addUserButton: '.submit-button.mat-raised-button.mat-accent',
+  addUserButton: '[aria-label="Add user"]',
   editUserButton: 'button[aria-label="Edit user"]',
   selectUserRole: 'mat-select.mat-select',
   selecktRoleManager: 'mat-option[role=option]:nth-of-type(2)',
@@ -34,6 +34,7 @@ module.exports = {
     I.click(this.selectUserRole);
     I.click(this.selecktRoleManager);
     I.fillField(this.fields.userPhone, userPhone);
+    I.waitForInvisible('[aria-label="Add user"][disabled]');
     I.click(this.addUserButton);
   },
 
