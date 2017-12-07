@@ -23,7 +23,7 @@ module.exports = {
   editPartnerButton: '[aria-label="Edit partner"]',
   editPartner: 'mat-row:last-of-type [tabindex="0"]',
   copyPartner: 'mat-row:last-of-type button:first-of-type',
-  deletePartner: 'mat-row:nth-last-of-type(2) button:last-of-type',
+  deletePartner: 'mat-row:last-of-type button:last-of-type',
   deletePartnerFirstConfirm: 'fuse-delete-dialog button:first-of-type',
   deletePartnerSecondConfirm: 'fuse-delete-dialog-confirm .mat-button:first-of-type',
 
