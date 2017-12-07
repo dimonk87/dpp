@@ -45,7 +45,7 @@ Before((I, loginPage) => {
     editPartnerPhone = Math.floor(Math.random()*100000);
 });
 
-Scenario('As admin I should be able to create new partner @partners', (I, partnersPage) => {
+Scenario('As admin I should be able to create new partner @partners @api', (I, partnersPage) => {
     I.refresh();
     I.click('[href="/partners"]');
     partnersPage.createNewPartner(partnerName, partnerEmail, partnerCompany, partnerPhone, note, operationNumber, institutionIdentifier);
@@ -58,7 +58,7 @@ Scenario('As admin I should be able to create new partner @partners', (I, partne
     });
 });
 
-Scenario('As admin I should be able to edit created partner @partners', (I, partnersPage) => {
+Scenario('As admin I should be able to edit created partner @partners @api', (I, partnersPage) => {
     I.sendPostRequest('/api/partners', JSON.stringify({
         "name": partnerName,
         "email": partnerEmail,
@@ -82,7 +82,7 @@ Scenario('As admin I should be able to edit created partner @partners', (I, part
     });
 });
 
-Scenario('As admin I should be able to copy edited partner @partners', (I, partnersPage) => {
+Scenario('As admin I should be able to copy edited partner @partners @api', (I, partnersPage) => {
     I.sendPostRequest('/api/partners', JSON.stringify({
         "name": editPartnerName,
         "email": editPartnerEmail,
@@ -108,7 +108,7 @@ Scenario('As admin I should be able to copy edited partner @partners', (I, partn
     });
 });
 
-Scenario('As admin I should be able to delete created partner @partners', (I, partnersPage) => {
+Scenario('As admin I should be able to delete created partner @partners @api', (I, partnersPage) => {
     I.sendPostRequest('/api/partners', JSON.stringify({
         "name": partnerName,
         "email": partnerEmail,

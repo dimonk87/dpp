@@ -37,8 +37,9 @@ Before((I) => {
     editUserName = "Change " + userName;
 });
 
-Scenario('create user @users', (I, usersPage) => {
+Scenario('As admin I should be able to create new user @users @api', (I, usersPage) => {
     I.refresh();
+    I.waitForElement('[href="/partners"]');
     usersPage.createNewUser(userName, userEmail, userPassword, userPhone);
     I.waitForText(userName, 5);
     I.see(userName);
@@ -49,7 +50,7 @@ Scenario('create user @users', (I, usersPage) => {
     });
 });
 
-Scenario('edit created user @users', (I, usersPage) => {
+Scenario('As admin I should be able to edit created user @users @api', (I, usersPage) => {
     I.sendPostRequest('/api/users', JSON.stringify({'email': userEmail, "name": userName, "password": userPassword, "role": 2, "phone": userPhone, "isBlocked": false}))
         .then(function(resp) {
             userId = resp.body.data.id;
@@ -63,7 +64,7 @@ Scenario('edit created user @users', (I, usersPage) => {
 
 });
 
-Scenario('delete created user @users', (I, usersPage) => {
+Scenario('As admin I should be able to delete created user @users @api', (I, usersPage) => {
     I.sendPostRequest('/api/users', JSON.stringify({'email': userEmail, "name": userName, "password": userPassword, "role": 2, "phone": userPhone, "isBlocked": false}))
         .then(function(resp) {
             userId = resp.body.data.id;
